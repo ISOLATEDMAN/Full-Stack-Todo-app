@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #ff9100;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .sub-header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+        input[type="text"] {
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            width: 70vh;
+            max-width: 300px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffffff;
+            margin-right: 10px;
+        }
+        #submit {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .todo-list {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .todo-item {
+            background-color: transparent;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 8px;
+            margin: 10px 0; /* Adjusted margin to give more space between items */
+            border-radius: 5px;
+            width: 70vh;
+            max-width: 300px;
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .todo-item-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .todo-item-buttons button {
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+        .delete-button {
+            background-color: #e53935; /* Red background */
+            color: white;
+        }
+        .edit-button {
+            background-color: #4CAF50; /* Green background */
+            color: white;
+        }
+        .edit-form {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            margin-top: 10px;
+            margin-left: 20px; /* Added margin for separation */
+        }
+        .edit-form input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        .edit-form button {
+            background-color: #2196F3;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .edit-form button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">THE TODO APP</h1>
+    <div style="height: 20vh;">
+        <img src="https://images.app.goo.gl/yWh5mySy6MfXxCvG9" alt="">
+    </div>
+    <div class="input-container">
+        <form action="/" method="POST"> <!-- Form for submitting data -->
+            <input type="text" name="title" placeholder="Enter your todo">
+            <button id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="todo-list">
+        <h2 class="sub-header">Todo List</h2>
+        <ul>
+            <% datalist.forEach(function(dataItem) { %>
+                <li class="todo-item">
+                    <span class="todo-title"><%= dataItem.title %></span>
+                    <div class="todo-item-buttons">
+                        <form action="/delete/<%= dataItem._id %>" method="POST">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                        <button class="edit-button">Edit</button>
+                    </div>
+                    <form action="/edit/<%= dataItem._id %>" method="POST" class="edit-form">
+                        <input type="text" name="editedTitle" value="<%= dataItem.title %>">
+                        <button type="submit">Save</button>
+                    </form>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <script>
+        // Toggle edit form display
+        const editButtons = document.querySelectorAll('.edit-button');
+        editButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const editForm = button.parentElement.nextElementSibling;
+                editForm.style.display = 'flex';
+            });
+        });
+    </script>
+</body>
+</html>
